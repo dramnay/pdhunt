@@ -1,31 +1,29 @@
 class Product {
   comments = [];
   tags = [];
-  noOfUpvotes = 0;
+  images = [];
   noOfComments = 0;
+  noOfUpvotes = 0;
+  // id = 0;
   constructor(
+    id,
     name,
-    visit_url,
     icon_url,
-    long_desp,
+    visit_url,
     short_desp,
-    created_by,
     created_on,
-    updated_by,
-    updated_on
+    created_by
   ) {
+    this.id = id;
     this.name = name;
-    this.visit_url = visit_url;
     this.icon_url = icon_url;
-    this.long_desp = long_desp;
+    this.visit_url = visit_url;
     this.short_desp = short_desp;
-    this.created_by = created_by;
     this.created_on = created_on;
-    this.updated_by = updated_by;
-    this.updated_on = updated_on;
+    this.created_by = created_by;
   }
 
-  addComments(comment) {
+  addComment(comment) {
     this.comments.push(comment);
     this.noOfComments++;
   }
@@ -34,22 +32,29 @@ class Product {
     this.tags.push(tag);
   }
 
-  upvote() {
-    this.noOfUpvotes++;
+  addImage(image) {
+    this.images.push(image);
   }
 
-  getComments() {
+  getComment() {
     console.log(this.comments);
   }
+
+  upvotes() {
+    this.noOfUpvotes++;
+  }
 }
+// module.exports(Product);
 
 class Comment {
-  constructor(id, description, created_by) {
+  constructor(id, desp, created_on, created_by) {
     this.id = id;
-    this.description = description;
+    this.desp = desp;
+    this.created_on = created_on;
     this.created_by = created_by;
   }
 }
+// module.exports(Comment);
 
 class Tag {
   constructor(id, name) {
@@ -57,18 +62,73 @@ class Tag {
     this.name = name;
   }
 }
+// module.exports(Tag);
 
-// let abcd = new Product("abcd","abcd.com","abcd.com","long_descrip","short_descrip",1,"created_on");
+class Image {
+  constructor(id, image) {
+    this.id = id;
+    this.image = image;
+  }
+}
 
-// abcd=JSON.stringify(abcd);
-// console.log(abcd);
-// const comment1 =  new Comment(1,"good",2);
-// abcd.addComments(comment1);
+// const prod1 = new Product(
+//     "id",
+//     "name",
+//     "icon_url",
+//     "visit_url",
+//     "short_desp",
+//     "created_on",
+//     "created_by"
+// );
+// const prod2 = new Product(
+//     "id",
+//     "name",
+//     "icon_url",
+//     "visit_url",
+//     "short_desp",
+//     "created_on",
+//     "created_by"
+// );
+// console.log(prod1);
 
-// const tag1 = new Tag(1,"tag1");
-// abcd.addTag(tag1);
-// abcd.upvote();
+// const comment1 = new Comment("id1", "desp", "created_on", "created_by");
+// const comment2 = new Comment("id2", "desp", "created_on", "created_by");
+// console.log(comment1);
 
-// console.log(abcd);
+// prod1.addComment(comment1);
+// prod1.addComment(comment2);
 
-module.exports = { Product, Comment, Tag };
+// const tag1 = new Tag("id", "tag");
+// prod1.addTag(tag1);
+
+// const image1 = new Image("id", "url");
+// prod1.addImage(image1);
+
+// prod1.upvotes();
+// prod1.upvotes();
+// prod1.upvotes();
+
+// // prod1.getComment();
+// // console.log(prod1.noOfComments);
+
+// console.log(prod1);
+
+// console.log(Product.prototype === prod1.__proto__);
+// console.log(prod2.__proto__.__proto__ === prod1.__proto__.__proto__);
+// // object.prototype is top of the chain
+// console.log(Product.prototype.isPrototypeOf(prod1));
+// console.log(Product.prototype.isPrototypeOf(prod2));
+// console.log(Product.prototype.isPrototypeOf(Product));
+
+// console.dir(Product.prototype.constructor);
+//.prototype of linked objects
+// Product.prototype.type = "Food";
+// console.log(prod1.type, prod2.type);
+// console.log(prod1.noOfComments);
+// //////
+
+// const arr = [1, 2, 3, 4, 5];
+// // console.log(arr.prototype); // // undefined
+// console.log(arr.__proto__);
+
+module.exports = { Product, Comment, Tag, Image };
