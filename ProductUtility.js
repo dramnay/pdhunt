@@ -1,16 +1,5 @@
 "use strict";
-const specialCharactersArray = [
-  ",",
-  "$",
-  "!",
-  "@",
-  "#",
-  "$",
-  "%",
-  "^",
-  "&",
-  "*",
-];
+const specialCharactersArray = ["$", "!", "@", "#", "$", "%", "^", "&", "*"];
 
 const isValidName = (name) => {
   if (!name || name.length == 0 || name.length > 100) return false;

@@ -1,29 +1,31 @@
 class Product {
   comments = [];
   tags = [];
-  images = [];
-  noOfComments = 0;
   noOfUpvotes = 0;
-  // id = 0;
+  noOfComments = 0;
   constructor(
-    id,
     name,
-    icon_url,
     visit_url,
+    icon_url,
+    long_desp,
     short_desp,
+    created_by,
     created_on,
-    created_by
+    updated_by,
+    updated_on
   ) {
-    this.id = id;
     this.name = name;
-    this.icon_url = icon_url;
     this.visit_url = visit_url;
+    this.icon_url = icon_url;
+    this.long_desp = long_desp;
     this.short_desp = short_desp;
-    this.created_on = created_on;
     this.created_by = created_by;
+    this.created_on = created_on;
+    this.updated_by = updated_by;
+    this.updated_on = updated_on;
   }
 
-  addComment(comment) {
+  addComments(comment) {
     this.comments.push(comment);
     this.noOfComments++;
   }
@@ -32,29 +34,22 @@ class Product {
     this.tags.push(tag);
   }
 
-  addImage(image) {
-    this.images.push(image);
-  }
-
-  getComment() {
-    console.log(this.comments);
-  }
-
-  upvotes() {
+  upvote() {
     this.noOfUpvotes++;
   }
+
+  getComments() {
+    console.log(this.comments);
+  }
 }
-// module.exports(Product);
 
 class Comment {
-  constructor(id, desp, created_on, created_by) {
+  constructor(id, description, created_by) {
     this.id = id;
-    this.desp = desp;
-    this.created_on = created_on;
+    this.description = description;
     this.created_by = created_by;
   }
 }
-// module.exports(Comment);
 
 class Tag {
   constructor(id, name) {
@@ -62,13 +57,18 @@ class Tag {
     this.name = name;
   }
 }
-// module.exports(Tag);
 
-class Image {
-  constructor(id, image) {
-    this.id = id;
-    this.image = image;
-  }
-}
+// let abcd = new Product("abcd","abcd.com","abcd.com","long_descrip","short_descrip",1,"created_on");
 
-module.exports = { Product, Comment, Tag, Image };
+// abcd=JSON.stringify(abcd);
+// console.log(abcd);
+// const comment1 =  new Comment(1,"good",2);
+// abcd.addComments(comment1);
+
+// const tag1 = new Tag(1,"tag1");
+// abcd.addTag(tag1);
+// abcd.upvote();
+
+// console.log(abcd);
+
+module.exports = { Product, Comment, Tag };
