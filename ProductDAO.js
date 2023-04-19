@@ -24,7 +24,7 @@ let getProductsFromDB = async (id) => {
   let detailedProduct;
   //this will fetch all products details including images and comments and no_of upvotes if any in detailedProduct
   detailedProduct = await query(
-    'SELECT p.id,p.name,p.short_desp,p.visit_url,p.icon_url,p.long_desp,created_on,created_by,updated_on,updated_by,GROUP_CONCAT(DISTINCT image.url SEPARATOR ",") AS images, GROUP_CONCAT(DISTINCT comment.desp SEPARATOR ",") AS comments, COUNT(DISTINCT upvote.user_id) as upvote_count FROM product p left JOIN image ON image.prod_id = p.id left JOIN comment ON comment.prod_id = p.id LEFT JOIN upvote ON upvote.prod_id = p.id GROUP BY p.id'
+    `SELECT p. id,p.name,p.icon_url,p.visit_url,p.short_desp,p.long_desp,p.created_by,p.created_on,p.updated_by,p.updated_on,(SELECT JSON_ARRAYAGG(JSON_OBJECT('id', t.id,'tag', t.tag))FROM tag t JOIN product_tag pt ON t.id = pt.tag_id WHERE pt.prod_id = p.id) AS tags,(SELECT JSON_ARRAYAGG(JSON_OBJECT('id', i.id,'url', i.url))FROM image i WHERE i.prod_id = p.id) AS images,(SELECT JSON_ARRAYAGG(JSON_OBJECT('id', c.id,'desp', c.desp,'created_by',c.user_id))FROM comment c WHERE c.prod_id = p.id) AS comments,(SELECT COUNT(user_id) FROM upvote WHERE upvote.prod_id = p.id) as upvotes FROM product p group by p.id`
   );
   //this map function will convert image and comment field value of every product which was earlier a string into array in detailedProduct
   detailedProduct = detailedProduct.map((row) => ({
