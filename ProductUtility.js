@@ -1,5 +1,26 @@
 "use strict";
 const specialCharactersArray = ["$", "!", "@", "#", "$", "%", "^", "&", "*"];
+const validkeyNames = [
+  "name",
+  "visit_url",
+  "icon_url",
+  "long_desp",
+  "short_desp",
+  "created_by",
+  "updated_by",
+  "comments",
+  "upvote",
+  "tags",
+  "images",
+];
+
+const isValidKeys = (productInput) => {
+  let inputKeys = Object.keys(productInput);
+  for (let i = 0; i < inputKeys.length; i++) {
+    if (!isValidKeys.includes(inputKeys[i])) return false;
+  }
+  return true;
+};
 
 const isValidName = (name) => {
   if (!name || name.length == 0 || name.length > 100) return false;
@@ -37,13 +58,13 @@ const isValidURL = (url) => {
   } else return false;
 };
 
-const isExtraData = (productInput) => {
-  return Object.keys(productInput).length > 12;
-};
+// const isExtraData = (productInput) => {
+//   return Object.keys(productInput).length > 12;
+// };
 
 const isValidInputProduct = (productInput) => {
-  if (isExtraData(productInput)) {
-    return { err: "Extra fields in the body" };
+  if (!isValidKeys(productInput)) {
+    return { err: "Invalid keys" };
   } else if (!isValidName(productInput["name"])) {
     return { err: "Invalid name field" };
   } else if (!isValidShortDesp(productInput["short_desp"])) {

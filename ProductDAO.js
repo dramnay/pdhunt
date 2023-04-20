@@ -19,18 +19,27 @@ connection.connect((err) => {
 });
 const query = util.promisify(connection.query).bind(connection);
 
+const modify = (element) => {
+  let arr = element.split("|");
+  arr.forEach((currEle, index, arr) => {
+    arr[index] = JSON.parse(currEle);
+  });
+  return arr;
+};
+
 ////1. GET METHOD//////
 let getProductsFromDB = async (id) => {
   let detailedProduct;
   //this will fetch all products details including images and comments and no_of upvotes if any in detailedProduct
   detailedProduct = await query(
-    `SELECT p. id,p.name,p.icon_url,p.visit_url,p.short_desp,p.long_desp,p.created_by,p.created_on,p.updated_by,p.updated_on,(SELECT JSON_ARRAYAGG(JSON_OBJECT('id', t.id,'tag', t.tag))FROM tag t JOIN product_tag pt ON t.id = pt.tag_id WHERE pt.prod_id = p.id) AS tags,(SELECT JSON_ARRAYAGG(JSON_OBJECT('id', i.id,'url', i.url))FROM image i WHERE i.prod_id = p.id) AS images,(SELECT JSON_ARRAYAGG(JSON_OBJECT('id', c.id,'desp', c.desp,'created_by',c.user_id))FROM comment c WHERE c.prod_id = p.id) AS comments,(SELECT COUNT(user_id) FROM upvote WHERE upvote.prod_id = p.id) as upvotes FROM product p group by p.id`
+    `SELECT p. id,p.name,p.icon_url,p.visit_url,p.short_desp,p.long_desp,p.created_by,p.created_on,p.updated_by,p.updated_on,(SELECT group_concat(JSON_OBJECT('id', t.id,'tag', t.tag) separator "| ")FROM tag t JOIN product_tag pt ON t.id = pt.tag_id WHERE pt.prod_id = p.id) AS tags,(SELECT group_concat(JSON_OBJECT('id', i.id,'url', i.url) separator "| ")FROM image i WHERE i.prod_id = p.id) AS images,(SELECT group_concat(JSON_OBJECT('id', c.id,'desp', c.desp,'created_by',c.user_id) separator "| ")FROM comment c WHERE c.prod_id = p.id) AS comments,(SELECT COUNT(user_id) FROM upvote WHERE upvote.prod_id = p.id) as upvotes FROM product p group by p.id`
   );
   //this map function will convert image and comment field value of every product which was earlier a string into array in detailedProduct
   detailedProduct = detailedProduct.map((row) => ({
     ...row,
-    images: row.images ? row.images.split(",") : [],
-    comments: row.comments ? row.comments.split(",") : [],
+    images: row.images ? modify(row.images) : [],
+    comments: row.comments ? modify(row.comments) : [],
+    tags: row.tags ? modify(row.tags) : [],
   }));
   id = Number(id);
   //this will return result of /product/id
@@ -50,6 +59,7 @@ let getProductsFromDB = async (id) => {
         visit_url,
         upvote_count,
         comments,
+        tags,
       } = ele;
       let product = {
         id,
@@ -58,6 +68,9 @@ let getProductsFromDB = async (id) => {
         icon_url,
         visit_url,
         upvote_count,
+        tags: tags.map((tag) => {
+          return tag.tag;
+        }),
         comments_count: comments.length,
       };
       homePageProducts.push(product);
