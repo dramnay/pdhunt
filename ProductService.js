@@ -46,6 +46,12 @@ let addProduct = async (productInput) => {
     const { id, name } = element;
     productObject.addTag(new model.Tag(id, name)); //adding tags to new product created
   }
+
+  for (let element of images) {
+    const { id, url } = element;
+    productObject.addImages(new model.Image(id, url)); //adding images to productObject
+  }
+
   while (upvote) productObject.upvote(); //adding upvotes to new product created​
   console.log(productObject);
   return await ProductDAO.addProductToDB(productObject);
