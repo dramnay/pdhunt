@@ -101,8 +101,8 @@ let addProductToDB = async (productInput) => {
 
   let columnQuery = "id,";
   let valuesQuery = `${userId},`;
-  columnQuery += `name, visit_url,icon_url,long_desp,short_desp,created_by,created_on,updated_by,updated_on`;
-  valuesQuery += `"${productInput["name"]}","${productInput["visit_url"]}","${productInput["icon_url"]}","${productInput["long_desp"]}","${productInput["short_desp"]}",${productInput["created_by"]},"${productInput["created_on"]}",${productInput["updated_by"]},"${productInput["updated_on"]}" `;
+  columnQuery += `name, visit_url,icon_url,long_desp,short_desp,created_by,updated_by`;
+  valuesQuery += `"${productInput["name"]}","${productInput["visit_url"]}","${productInput["icon_url"]}","${productInput["long_desp"]}","${productInput["short_desp"]}",${productInput["created_by"]},${productInput["updated_by"]} `;
 
   let defaultSqlQuery = "SELECT * FROM product";
 

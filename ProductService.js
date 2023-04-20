@@ -18,9 +18,7 @@ let addProduct = async (productInput) => {
     long_desp,
     short_desp,
     created_by,
-    created_on,
     updated_by,
-    updated_on,
     comments,
     upvote,
     tags,
@@ -32,9 +30,7 @@ let addProduct = async (productInput) => {
     long_desp,
     short_desp,
     created_by,
-    created_on,
-    updated_by,
-    updated_on
+    updated_by
   );
 
   for (let element of comments) {
@@ -47,12 +43,12 @@ let addProduct = async (productInput) => {
     productObject.addTag(new model.Tag(id, name)); //adding tags to new product created
   }
 
-  for (let element of images) {
-    const { id, url } = element;
-    productObject.addImages(new model.Image(id, url)); //adding images to productObject
-  }
+  // for (let element of images) {
+  //   const { id, url } = element;
+  //   productObject.addImages(new model.Image(id, url)); //adding images to productObject
+  // }
 
-  while (upvote) productObject.upvote(); //adding upvotes to new product created​
+  while (upvote--) productObject.upvote(); //adding upvotes to new product created​
   console.log(productObject);
   return await ProductDAO.addProductToDB(productObject);
 };
